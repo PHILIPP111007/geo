@@ -98,7 +98,7 @@ def create_db(path):
 
 # File contains 5_581_382 records
 # Downloaded from:
-# https://db-ip.com/db/format/ip-to-city-lite/csv.html
+# https://db-ip.com/db/download/ip-to-city-lite
 db_csv_path: str = '/Users/philr/Downloads/dbip-city-lite-2023-09.csv'
 
 

@@ -33,7 +33,7 @@ Activate python virtual enviroment.
 source venv/bin/activate
 ```
 
-Download data base (it will take about 10 minutes).
+Download data base (.csv) from https://db-ip.com/db/download/ip-to-city-lite (about 450 Mb) and run this script that will create sqlite DB (it will take about 10 minutes).
 ```sh
 python manage.py shell < create_db.py
 ```
