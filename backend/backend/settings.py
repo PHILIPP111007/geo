@@ -30,24 +30,34 @@ ALLOWED_HOSTS = ['*']
 
 # Application definition
 
-INSTALLED_APPS = [
+DJANGO_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-
-    # REST API
-	"corsheaders",
-	"rest_framework",
-	"rest_framework.authtoken",
-	"djoser",
-
-    'api',
+    'django.contrib.gis',
+	# brew install gdal
+    # brew install postgresql@15
+    # python3 -m pip install psycopg2-binary
 ]
 
-MIDDLEWARE = [
+THIRD_PARTY_APPS = [
+	'corsheaders',
+	'rest_framework',
+	'rest_framework.authtoken',
+	'djoser',
+]
+
+LOCAL_APPS = [
+	'api'
+]
+
+INSTALLED_APPS = THIRD_PARTY_APPS + DJANGO_APPS + LOCAL_APPS
+
+
+DJANGO_MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -56,6 +66,13 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
+
+THIRD_PARTY_MIDDLEWARE = [
+	"corsheaders.middleware.CorsMiddleware", # for working Django REST
+]
+
+MIDDLEWARE = DJANGO_MIDDLEWARE + THIRD_PARTY_MIDDLEWARE
+
 
 ROOT_URLCONF = 'backend.urls'
 
@@ -81,11 +98,22 @@ WSGI_APPLICATION = 'backend.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': BASE_DIR / 'db.sqlite3',
+#     }
+# }
+
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
+        'ENGINE': 'django.contrib.gis.db.backends.postgis',
+        'NAME': 'postgres',
+        'USER': 'postgres',
+        'HOST': 'localhost',
+		'PORT': 5432,
+        'PASSWORD': '12345',
+    },
 }
 
 
@@ -161,3 +189,8 @@ DJOSER = {
    "USER_ID_FIELD": "pk",
    "LOGIN_FIELD": "username",
 }
+
+
+# CORS settings
+
+CORS_ORIGIN_ALLOW_ALL: bool = True

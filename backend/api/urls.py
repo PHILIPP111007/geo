@@ -15,9 +15,10 @@ POST http://127.0.0.1:8000/auth/token/logout/
 """
 
 from django.urls import path, include
-from .views import GeoAPIView
+from .views import IPAPIView, GPSAPIView
 
 urlpatterns = [
     path("auth/", include("djoser.urls")),
-    path('geo/', GeoAPIView.as_view())
+    path('ip/', IPAPIView.as_view()),
+    path('gps/', GPSAPIView.as_view()),
 ]

@@ -7,8 +7,8 @@ static=""
 
 read -p "[1 / 4] Create venv and download packages? [y / n] : " venv
 read -p "[2 / 4] Create migrations? [y / n] : " migrations
-read -p "[4 / 4] Create superuser? [y / n] : " superuser
-read -p "[3 / 4] Collect static files? [y / n] : " static
+read -p "[3 / 4] Create superuser? [y / n] : " superuser
+read -p "[4 / 4] Collect static files? [y / n] : " static
 
 create_venv() {
 	if [ ! -d "venv" ]
