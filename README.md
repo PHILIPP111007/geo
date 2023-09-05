@@ -59,7 +59,7 @@ Go to `localhost:3000` and you will see minimalistic GUI with two buttons: get p
 
 This app works with `Postgres` (https://www.postgresql.org/), `PostGIS` (https://postgis.net/) and needs to be installed `gdal` (https://gdal.org/index.html) dependency.
 
-First of all you need to run Postgres server. Than go to backend directory.
+First of all you need to run Postgres server. Then go to backend directory.
 ```sh
 cd backend
 ```
