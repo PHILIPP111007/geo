@@ -2,100 +2,126 @@ import "./styles/App.css"
 import { useState } from "react"
 import Fetch from "./API/Fetch"
 
-
-const errorGetPos = "Error while getting your position."
+const errorServer = "Error while sending to the server."
 
 export default function App() {
-    const [coordsGPS, setCoordsGPS] = useState(undefined)
-    const [coordsIP, setCoordsIP] = useState(undefined)
+	const [coordsGPS, setCoordsGPS] = useState(undefined)
+	const [coordsIP, setCoordsIP] = useState(undefined)
 
-    const [loadingGPS, setLoadingGPS] = useState(false)
-    const [loadingIP, setLoadingIP] = useState(false)
+	const [loadingGPS, setLoadingGPS] = useState(false)
+	const [loadingIP, setLoadingIP] = useState(false)
 
-    const [errorMsg, setErrorMsg] = useState("")
+	const [errorMsg, setErrorMsg] = useState("")
 
-    async function createPositionGPS() {
-        setLoadingGPS(true)
-        setCoordsGPS(undefined)
-        navigator.geolocation.getCurrentPosition(successCallback, errorCallBack)
-    }
+	const options = {
+		enableHighAccuracy: true,
+		maximumAge: 0,
+	}
 
-    async function successCallback(position) {
-        setLoadingGPS(false)
+	// const watch = navigator.geolocation.watchPosition(position => {
+	// 	console.log(position)
+	// })
 
-        const crdsDict = {
-            coords: {
-                accuracy: position.coords.accuracy,
-                altitude: position.coords.altitude,
-                altitudeAccuracy: position.coords.altitudeAccuracy,
-                heading: position.coords.heading,
-                latitude: position.coords.latitude,
-                longitude: position.coords.longitude,
-                speed: position.coords.speed,
-            },
-            timestamp: position.timestamp,
-        }
-        setCoordsGPS(crdsDict)
+	async function createPositionGPS() {
+		setLoadingGPS(true)
+		setCoordsGPS(undefined)
 
-        await Fetch({ action: 'api/gps/', method: 'POST', body: crdsDict })
-    }
+		// https://w3c.github.io/geolocation-api/
+		navigator.geolocation.getCurrentPosition(successCallback, errorCallBack, options)
+	}
 
-    async function errorCallBack() {
-        setLoadingGPS(false)
-        setErrorMsg(errorGetPos)
-        console.error(errorGetPos)
-    }
+	async function successCallback(position) {
+		setLoadingGPS(false)
 
-    async function getPositionIP() {
-        setCoordsIP(undefined)
-        setLoadingIP(true)
+		const crdsDict = {
+			coords: {
+				accuracy: position.coords.accuracy,
+				altitude: position.coords.altitude,
+				altitudeAccuracy: position.coords.altitudeAccuracy,
+				heading: position.coords.heading,
+				latitude: position.coords.latitude,
+				longitude: position.coords.longitude,
+				speed: position.coords.speed,
+			},
+			timestamp: position.timestamp,
+		}
+		setCoordsGPS(crdsDict)
 
-        const data = await Fetch({ action: 'api/ip/', method: 'GET' })
-        setLoadingIP(false)
-        if (data.ok) {
-            setCoordsIP(data.coords)
-        }
-    }
+		const data = await Fetch({ action: 'api/gps/', method: 'POST', body: crdsDict })
+		if (data && data.ok) {
+			setErrorMsg("")
+			console.log('data saved.')
+		} else {
+			setErrorMsg(errorServer)
+			console.error(errorServer)
+		}
+	}
 
-    return (
-        <div className="App">
-            <div className="GPS">
-                <strong>See your geolocation by GPS: </strong>
-                {loadingGPS
-                    ?
-                    <div>Wait...</div>
-                    :
-                    <button onClick={() => createPositionGPS()}>Get</button>
-                }
-                <p>
-                    {errorMsg
-                        &&
-                        <div className="Error" onClick={() => setErrorMsg("")}>
-                            {errorMsg}
-                        </div>
-                    }
-                </p>
+	async function errorCallBack(error) {
+		setLoadingGPS(false)
+		setErrorMsg(error.message)
+		console.error(error)
+	}
 
-                {coordsGPS
-                    &&
-                    <pre>{JSON.stringify(coordsGPS, null, 4)}</pre>
-                }
-            </div>
+	async function getPositionIP() {
+		setCoordsIP(undefined)
+		setLoadingIP(true)
 
-            <div className="IP">
-                <strong>See your geolocation by IP: </strong>
-                {loadingIP
-                    ?
-                    <div>Wait...</div>
-                    :
-                    <button onClick={() => getPositionIP()}>Get</button>
-                }
+		const data = await Fetch({ action: 'api/ip/', method: 'GET' })
+		setLoadingIP(false)
+		if (data && data.ok) {
+			setCoordsIP(data.coords)
+		}
+	}
 
-                {coordsIP
-                    &&
-                    <pre>{JSON.stringify(coordsIP, null, 4)}</pre>
-                }
-            </div>
-        </div>
-    )
+	return (
+		<div className="App">
+			<div className="GPS">
+				<strong>See your geolocation by GPS: </strong>
+				{loadingGPS
+					?
+					<div>Wait...</div>
+					:
+					<button onClick={() => createPositionGPS()}>Get</button>
+				}
+				<p>
+					{errorMsg
+						&&
+						<div className="Error" onClick={() => setErrorMsg("")}>
+							{errorMsg}
+						</div>
+					}
+				</p>
+
+				{coordsGPS
+					&&
+					<>
+						<pre>{JSON.stringify(coordsGPS, null, 4)}</pre>
+						<a
+							id="map-link"
+							target="_blank"
+							href={`https://www.openstreetmap.org/#map=18/${coordsGPS.coords.latitude}/${coordsGPS.coords.longitude}`}
+						>
+							See yourself on the map
+						</a>
+					</>
+				}
+			</div>
+
+			<div className="IP">
+				<strong>See your geolocation by IP: </strong>
+				{loadingIP
+					?
+					<div>Wait...</div>
+					:
+					<button onClick={() => getPositionIP()}>Get</button>
+				}
+
+				{coordsIP
+					&&
+					<pre>{JSON.stringify(coordsIP, null, 4)}</pre>
+				}
+			</div>
+		</div>
+	)
 }

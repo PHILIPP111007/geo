@@ -18,7 +18,7 @@ from django.urls import path, include
 from .views import IPAPIView, GPSAPIView
 
 urlpatterns = [
-    path("auth/", include("djoser.urls")),
-    path('ip/', IPAPIView.as_view()),
-    path('gps/', GPSAPIView.as_view()),
+	path("auth/", include("djoser.urls")),
+	path('ip/', IPAPIView.as_view()),
+	path('gps/', GPSAPIView.as_view()),
 ]

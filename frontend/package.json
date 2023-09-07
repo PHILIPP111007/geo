@@ -1,11 +1,11 @@
 {
 	"name": "geo",
-	"version": "0.1.0",
+	"version": "0.2.0",
 	"license": "MIT",
 	"author": {
 		"name": "Philipp Roshchin",
 		"email": "r.phil@yandex.ru",
-		"url": "https://github.com/PHILIPP111007/phils_network"
+		"url": "https://github.com/PHILIPP111007/geo"
 	},
 	"private": true,
 	"homepage": "/",
