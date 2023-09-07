@@ -2,14 +2,18 @@ from django.contrib.gis.db import models
 
 
 class IPv4Location(models.Model):
-	ip_first = models.PositiveBigIntegerField() # First IP address in the block
-	ip_last = models.PositiveBigIntegerField() # Last IP address in the block
-	continent = models.CharField(max_length=2) # Two-letter continent code [AF, AS, EU, NA, OC, SA, AN]
-	country = models.CharField(max_length=2) # ISO 3166-1 alpha-2 country code (2 letter)
-	stateprov = models.TextField() # State or Province name
-	city = models.TextField() # City name
-	latitude = models.FloatField() # Decimal latitude
-	longitude = models.FloatField() # Decimal longitude
+	ip_first = models.DecimalField(max_digits=13, decimal_places=0, \
+		verbose_name='first IP address in the block')
+	ip_last = models.DecimalField(max_digits=13, decimal_places=0, \
+		verbose_name='fast IP address in the block')
+	continent = models.CharField(max_length=2, \
+		verbose_name='two-letter continent code [AF, AS, EU, NA, OC, SA, AN]')
+	country = models.CharField(max_length=2, \
+		verbose_name='ISO 3166-1 alpha-2 country code (2 letter)')
+	stateprov = models.TextField(verbose_name='state or province name')
+	city = models.TextField(verbose_name='city name')
+	latitude = models.FloatField()
+	longitude = models.FloatField()
 
 	class Meta:
 		verbose_name = 'IPv4 Location'
@@ -20,12 +24,16 @@ class IPv4Location(models.Model):
 
 
 class IPv6Location(models.Model):
-	ip_first = models.DecimalField(max_digits=100, decimal_places=0)
-	ip_last = models.DecimalField(max_digits=100, decimal_places=0)
-	continent = models.CharField(max_length=2)
-	country = models.CharField(max_length=2)
-	stateprov = models.TextField()
-	city = models.TextField()
+	ip_first = models.DecimalField(max_digits=39, decimal_places=0, \
+		verbose_name='first IP address in the block')
+	ip_last = models.DecimalField(max_digits=39, decimal_places=0, \
+		verbose_name='last IP address in the block')
+	continent = models.CharField(max_length=2, \
+		verbose_name='two-letter continent code [AF, AS, EU, NA, OC, SA, AN]')
+	country = models.CharField(max_length=2, \
+		verbose_name='ISO 3166-1 alpha-2 country code (2 letter)')
+	stateprov = models.TextField(verbose_name='state or province name')
+	city = models.TextField(verbose_name='city name')
 	latitude = models.FloatField()
 	longitude = models.FloatField()
 
@@ -38,7 +46,8 @@ class IPv6Location(models.Model):
 
 
 class GPSLocation(models.Model):
-	point = models.PointField(dim=2, srid=4326, null=True)
+	point = models.PointField(dim=2, srid=4326, null=True, \
+		verbose_name='geo position point')
 	timestamp = models.DateTimeField(auto_now_add=True, null=True)
 
 	class Meta:

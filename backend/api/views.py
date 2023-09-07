@@ -30,7 +30,6 @@ class IPAPIView(APIView):
 				'info': ip_info
 			}
 		}
-
 		return Response(resp, status=status.HTTP_200_OK)
 
 

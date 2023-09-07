@@ -1,7 +1,5 @@
 from ipaddress import ip_address, IPv4Address, IPv6Address
 
-from django.db.models.functions import Cast
-from django.contrib.gis.db import models
 from django.contrib.gis.geos import Point
 
 from rest_framework.request import Request
@@ -41,28 +39,24 @@ class IPService:
 
 	@staticmethod
 	def find_ip_info(ip: IPv4Address | IPv6Address) -> ReturnDict | None:
-
-		ip_integer = int(ip)
+		ip_int = int(ip)
 
 		if isinstance(ip, IPv4Address):
 			info = IPv4Location.objects \
-				.filter(ip_first__lte=ip_integer, ip_last__gte=ip_integer)
-			
+				.filter(ip_first__lte=ip_int, ip_last__gte=ip_int)
+
 			if info.exists():
 				info = IPv4LocationSerializer(info[0]).data
 			else:
 				info = None
 		else:
 			info = IPv6Location.objects \
-				.annotate(ip_first_text=Cast('ip_first', output_field=models.CharField())) \
-				.annotate(ip_last_text=Cast('ip_last', output_field=models.CharField())) \
-					.filter(ip_first_text__lte=ip_integer, ip_last_text__gte=ip_integer)
+				.filter(ip_first__lte=ip_int, ip_last__gte=ip_int)
 
 			if info.exists():
 				info = IPv6LocationSerializer(info[0]).data
 			else:
 				info = None
-
 		return info
 
 
