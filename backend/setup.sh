@@ -10,6 +10,11 @@ read -p "[2 / 4] Create migrations? [y / n] : " migrations
 read -p "[3 / 4] Create superuser? [y / n] : " superuser
 read -p "[4 / 4] Collect static files? [y / n] : " static
 
+# `tmp` directory is for gunicorn.pid file
+make_tmp() {
+	mkdir $PWD/tmp
+}
+
 create_venv() {
 	if [ ! -d "venv" ]
 		then
@@ -67,6 +72,11 @@ collect_static() {
 			echo "Static script: you dont have venv."
 	fi
 }
+
+if [ ! -d "tmp" ]
+	then
+		make_tmp
+fi
 
 # Create venv and install packages
 if [ $venv = "y" ]

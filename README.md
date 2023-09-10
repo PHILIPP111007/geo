@@ -7,7 +7,7 @@ Get your geo location based on IP address or GPS.
 Go to `localhost:3000` and you will see minimalistic GUI with two buttons: get position by GPS and IP.
 
 ```json
-// After getting `localhost:8000/api/ip/` you will see something lile that:
+// After getting `localhost:8000/api/ip/` you will see something lile this:
 
 {
     "ip": "12.0.0.0",
@@ -22,7 +22,7 @@ Go to `localhost:3000` and you will see minimalistic GUI with two buttons: get p
     }
 }
 
-// or that:
+// or this:
 
 {
     "ip": "2001:0db8:0a0b:12f0:0000:0000:0000:0001",
@@ -39,7 +39,7 @@ Go to `localhost:3000` and you will see minimalistic GUI with two buttons: get p
 ```
 
 ```json
-// After getting `localhost:8000/api/gps/` you will see this:
+// After getting `localhost:8000/api/gps/` from frontend app you will see this:
 
 {
     "coords": {
@@ -66,7 +66,7 @@ cd backend
 
 Run `setup.sh` script to create venv, DB migrations, superuser and collect static files.
 ```sh
-bash setup.sh
+bash ./setup.sh
 ```
 
 Activate python virtual enviroment.
@@ -81,7 +81,7 @@ python manage.py shell < create_db.py
 
 Run app server.
 ```sh
-python manage.py runserver
+bash ./gunicorn_rc
 ```
 
 Then go to the frontend directory.

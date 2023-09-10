@@ -96,6 +96,7 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'backend.wsgi.application'
+ASGI_APPLICATION = 'backend.asgi.application'
 
 
 # Database
@@ -112,10 +113,10 @@ DATABASES = {
 	'default': {
 		'ENGINE': 'django.contrib.gis.db.backends.postgis',
 		'NAME': environ.get('PG_NAME'),
-        'USER': environ.get('PG_USER'),
-        'HOST': environ.get('PG_HOST'),
+		'USER': environ.get('PG_USER'),
+		'HOST': environ.get('PG_HOST'),
 		'PORT': int(environ.get('PG_PORT', default='5432')),
-        'PASSWORD': environ.get('PG_PASSWORD'),
+		'PASSWORD': environ.get('PG_PASSWORD'),
 	},
 }
 

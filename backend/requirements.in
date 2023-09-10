@@ -7,6 +7,7 @@ django-cors-headers==4.2.0
 
 ### Server
 gunicorn==21.2.0
+uvicorn[standard]==0.23.2
 
 ### Works with static for gunicorn
 whitenoise==6.5.0
